@@ -1,0 +1,59 @@
+<!--<form class="form" (submit)="add(firstname.value, lastname.value, email.value, phone.value);">-->
+    <!--<div class="form-group">-->
+        <!--<input #firstname type="text" class="form-control" placeholder="Firstname">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+        <!--<input #lastname type="text" class="form-control" placeholder="Lastname">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+        <!--<input #email type="email" class="form-control" placeholder="Email">-->
+    <!--</div>-->
+    <!--<div class="form-group">-->
+        <!--<input #phone type="text" class="form-control" placeholder="Phone Number">-->
+    <!--</div>-->
+    <!--<input type="submit" value="Add" class="btn btn-success btn-lg btn-block">-->
+<!--</form>-->
+
+<table class="table">
+    <tr>
+        <td class="text-left">
+            Firstname
+        </td>
+        <td class="text-left">
+            Lastname
+        </td>
+        <td class="text-left">
+            Email
+        </td>
+        <td class="text-left">
+            Phone Number
+        </td>
+    </tr>
+    <tr *ngFor="let contact of contacts">
+        <td class="text-left">
+            <a (click)="edit(contact)">
+                <span *ngIf="contact!==editContact">{{contact.firstname}}</span>
+                <span *ngIf="contact===editContact" [(ngModel)]="contact.firstname" (blur)="update()" (keyup.enter)="update()"></span>
+            </a>
+        </td>
+        <td class="text-left">
+            {{contact.lastname}}
+        </td>
+        <td class="text-left">
+            {{contact.email}}
+        </td>
+        <td class="text-left">
+            {{contact.phone}}
+        </td>
+        <td class="text-right">
+            <button class="btn btn-warning" (click)="edit(contact)">
+                Edit
+            </button>
+        </td>
+        <td class="text-right">
+            <button class="btn btn-danger" (click)="delete(contact)">
+                Delete
+            </button>
+        </td>
+    </tr>
+</table>
