@@ -1,25 +1,31 @@
 
-import {Component} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
+
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import { Contact } from './contact';
 import { NgForm } from '@angular/forms';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {observable, Observable} from 'rxjs';
-// import 'rxjs/add/operator/toPromise';
 
 @Component({
     selector: 'app-contact-form',
     templateUrl: './contact-form.component.html',
 })
-export class ContactFormComponent {
-    constructor(private http: HttpClient) {}
+export class ContactFormComponent implements OnInit {
 
-    contacts: Contact[];
+    formData: Contact;
 
-    private headers = new HttpHeaders({'Content-Type': 'application/json'});
+    constructor(
+        @Inject(MAT_DIALOG_DATA) public data,
+        public dialogRef: MatDialogRef<ContactFormComponent>) {}
 
-    add(firstname: string, lastname: string, email: string, phone: string) {
-        const newContact: Contact = {firstname, lastname, email, phone} as Contact;
-        this.contacts.push(newContact);
-        console.log( this.http.post<Contact>('http://localhost:4200/api/v1/contact', newContact));
+    ngOnInit(): void {
+        this.formData = {
+            id: 0,
+            firstname: this.data.contact.firstname,
+            lastname: this.data.contact.lastname ,
+            email: this.data.contact.email,
+            phone: this.data.contact.phone,
+        };
     }
 }

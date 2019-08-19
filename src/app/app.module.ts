@@ -9,6 +9,10 @@ import { AppComponent } from './app.component';
 import { ContactsListComponent } from './contacts/contacts-list.component';
 import {ContactFormComponent} from './contacts/contact-form.component';
 
+
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
   declarations: [
     AppComponent, ContactsListComponent, ContactFormComponent
@@ -19,7 +23,10 @@ import {ContactFormComponent} from './contacts/contact-form.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
+  entryComponents: [ContactFormComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

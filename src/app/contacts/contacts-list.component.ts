@@ -60,6 +60,8 @@ import { Contact } from './contact';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {MatDialog, MatDialogConfig} from '@angular/material';
+import {ContactFormComponent} from './contact-form.component';
 
 
 
@@ -71,7 +73,7 @@ import {catchError} from 'rxjs/operators';
 export class ContactsListComponent implements OnInit {
 
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient, private dialog: MatDialog) {}
 
     private contacts: Contact[]
     private editContact: Contact
@@ -80,6 +82,15 @@ export class ContactsListComponent implements OnInit {
 
     ngOnInit() {
        this.getContacts();
+    }
+
+    OpenContactForm(contact) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.disableClose = true;
+        dialogConfig.width = '50%';
+        dialogConfig.data = {contact};
+        this.dialog.open(ContactFormComponent, dialogConfig);
     }
 
     handleError(error) {

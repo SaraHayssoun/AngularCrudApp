@@ -1,17 +1,16 @@
+<div class="jumbotron jumbotron-fluid">
+  <h1 class="display-4 text-center">Address Book</h1>
+</div>
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-6">
-      <h1 class="text-center">Address Book</h1>
+    <div class="col-md-auto">
       <div class="row">
-        <div class="col-md-3">
-          <button class="btn btn-success" routerLink="/addNew">
-            Add New
-          </button>
+        <div class="col-md-auto">
+          <router-outlet></router-outlet>
         </div>
       </div>
-      <app-contacts></app-contacts>
+      <!--<app-contacts></app-contacts>-->
       <!--<app-contact-form></app-contact-form>-->
     </div>
   </div>
-  <!--<router-outlet></router-outlet>-->
 </div>
