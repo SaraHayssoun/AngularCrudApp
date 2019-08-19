@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "http://localhost:8000/api",
+    "target": "http://laravel.test/api",
     "secure": false,
     "loglevel": "debug",
     "changeOrigin": true,
