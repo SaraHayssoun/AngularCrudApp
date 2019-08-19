@@ -1,20 +1,19 @@
 <h4 class="display-6 text-center">Add New Contact</h4>
-<form class="form" (submit)="add(firstname.value, lastname.value, email.value, phone.value);">
+<form #form="ngForm" class="form" (submit)="add(firstname.value, lastname.value, email.value, phone.value);">
     <div class="form-group">
-        <input #firstname type="text" class="form-control" placeholder="Firstname">
+        <input name="firstname" #firstname type="text" [(ngModel)]="formData.firstname"  class="form-control" placeholder="Firstname">
     </div>
     <div class="form-group">
-        <input #lastname type="text" class="form-control" placeholder="Lastname">
+        <input name="lastname" #lastname type="text" [(ngModel)]="formData.lastname"  class="form-control" placeholder="Lastname">
     </div>
     <div class="form-group">
-        <input #email type="email" class="form-control" placeholder="Email">
+        <input name="email" #email type="email" [(ngModel)]="formData.email"  class="form-control" placeholder="Email">
     </div>
     <div class="form-group">
-        <input #phone type="text" class="form-control" placeholder="Phone Number">
+        <input name="phone" #phone type="text" [(ngModel)]="formData.phone"  class="form-control" placeholder="Phone Number">
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i>Add</button>
+        <button type="submit" class="btn btn-success"><i class="fa fa-check"></i>Submit</button>
         <button type="button" class="btn btn-secondary" [mat-dialog-close] ><i class="fa fa-close"></i>Close</button>
     </div>
-    <!--<input type="submit" value="Add" class="btn btn-success btn-lg btn-block">-->
 </form>

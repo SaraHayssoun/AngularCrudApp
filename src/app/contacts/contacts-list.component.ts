@@ -68,7 +68,6 @@ import {ContactFormComponent} from './contact-form.component';
 @Component({
     selector: 'app-contacts',
     templateUrl: './contacts-list.component.html',
-    // styleUrls: ['./contacts.component.css']
 })
 export class ContactsListComponent implements OnInit {
 
