@@ -39,6 +39,11 @@
             {{contact.phone}}
         </td>
         <td class="text-right">
+            <button class="btn btn-secondary" (click)="OpenContactFormView(contact)">
+                <i class="fa fa-eye"></i> View
+            </button>
+        </td>
+        <td class="text-right">
             <button class="btn btn-warning" (click)="OpenContactForm(contact)">
                 <i class="fa fa-pencil"></i> Edit
             </button>

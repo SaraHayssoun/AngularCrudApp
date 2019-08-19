@@ -62,6 +62,7 @@ import { Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {MatDialog, MatDialogConfig} from '@angular/material';
 import {ContactFormComponent} from './contact-form.component';
+import {ContactFormViewComponent} from './contact-form-view.component';
 
 
 
@@ -90,6 +91,15 @@ export class ContactsListComponent implements OnInit {
         dialogConfig.width = '50%';
         dialogConfig.data = {contact};
         this.dialog.open(ContactFormComponent, dialogConfig);
+    }
+
+    OpenContactFormView(contact) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.autoFocus = true;
+        dialogConfig.disableClose = true;
+        dialogConfig.width = '50%';
+        dialogConfig.data = {contact};
+        this.dialog.open(ContactFormViewComponent, dialogConfig);
     }
 
     handleError(error) {

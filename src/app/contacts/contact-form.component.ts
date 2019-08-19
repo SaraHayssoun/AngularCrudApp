@@ -16,6 +16,7 @@ export class ContactFormComponent implements OnInit {
 
     formData: Contact;
     private contacts: Contact[]
+    private editContact
 
     getContacts() {
         return this.http.get('http://localhost:4200/api/v1/contacts')
@@ -29,28 +30,39 @@ export class ContactFormComponent implements OnInit {
     ngOnInit(): void {
         this.getContacts();
         if (this.data.contact !== null) {
-            // console.log(this.data);
             this.formData = Object.assign({}, this.data.contact);
+            this.editContact = true;
         }
     }
     add(firstname: string, lastname: string, email: string, phone: string) {
-        // this.editContact = undefined;
+        if (this.editContact === true){
+            this.update().subscribe(contact => {
+                const ix = contact ? this.contacts.findIndex(c => c.id === contact.id) : -1;
+                console.log(ix);
+                if (ix > -1) {
+                    this.contacts[ix] = contact;
+                }
+            });
+        } else {
+            const newContact: Contact = {firstname, lastname, email, phone} as Contact
 
-        const newContact: Contact = {firstname, lastname, email, phone} as Contact
-
-        this.post(newContact).subscribe(
-            data => {
-                this.formData = data;
-            }
-        );
+            this.post(newContact).subscribe(
+                data => {
+                    this.formData = data;
+                }
+            );
+            this.contacts.push(this.formData);
+        }
         this.dialogRef.close();
-        this.contacts.push(this.formData);
-
-
     }
 
     post(contact: Contact): Observable<any> {
         return this.http.post('http://localhost:4200/api/v1/contacts', contact, {responseType: 'text'})
+            .pipe(catchError(this.handleError));
+    }
+
+    update() {
+        return this.http.put<Contact>(`http://localhost:4200/api/v1/contacts/${this.formData.id}`, this.formData)
             .pipe(catchError(this.handleError));
     }
 
