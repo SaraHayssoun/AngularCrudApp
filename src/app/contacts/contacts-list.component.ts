@@ -57,63 +57,88 @@
 
 import {Component, OnInit} from '@angular/core';
 import { Contact } from './contact';
-import { NgForm } from '@angular/forms';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {observable, Observable} from 'rxjs';
-import {RequestOptions} from '@angular/http';
-import {catchError, map} from 'rxjs/operators';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import { Observable, throwError} from 'rxjs';
+import {catchError} from 'rxjs/operators';
+
+
+
 @Component({
     selector: 'app-contacts',
     templateUrl: './contacts-list.component.html',
     // styleUrls: ['./contacts.component.css']
 })
 export class ContactsListComponent implements OnInit {
+
+
     constructor(private http: HttpClient) {}
 
-    contacts: Contact[]
-    editContact: Contact
+    private contacts: Contact[]
+    private editContact: Contact
+    private contact: Contact
 
-    private headers = new HttpHeaders({'Content-Type': 'application/json'});
-    title = 'Laravel Angular 4 App';
 
     ngOnInit() {
-       console.log(this.getContacts());
+       this.getContacts();
+    }
+
+    handleError(error) {
+        let errorMessage = '';
+        if(error.error instanceof ErrorEvent) {
+            // Get client-side error
+            errorMessage = error.error.message;
+        } else {
+            // Get server-side error
+            errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+        }
+        window.alert(errorMessage);
+        return throwError(errorMessage);
     }
 
     getContacts() {
-       return this.http.get('http://localhost:4200/api/v1/contacts').subscribe(contacts => {this.contacts = contacts as Contact[]; }) ;
+       return this.http.get('http://localhost:4200/api/v1/contacts')
+           .subscribe(contacts => {this.contacts = contacts as Contact[]; }) ;
     }
 
     add(firstname: string, lastname: string, email: string, phone: string) {
-        // this.editContact = undefined;
+        this.editContact = undefined;
 
-        const newContact: Contact = {firstname, lastname, email, phone} as Contact;
-        console.log(newContact);
-        this.contacts.push(newContact);
-        return this.http.post<Contact>('http://localhost:4200/api/v1/contacts',
-            {firstname, lastname, email, phone}, {headers: this.headers});
+        const newContact: Contact = {firstname, lastname, email, phone} as Contact
+
+        this.post(newContact).subscribe(
+                data => {
+                    this.contact = data;
+                }
+            );
+        this.contacts.push(this.contact);
+    }
+
+    post(contact: Contact): Observable<any> {
+        return this.http.post('http://localhost:4200/api/v1/contacts', contact, {responseType: 'text'})
+            .pipe(catchError(this.handleError));
     }
 
     delete(contact: Contact) {
-        console.log(contact);
         this.contacts = this.contacts.filter(c => c !== contact);
         const url = `http://localhost:4200/api/v1/contacts/${contact.id}`;
         return this.http.delete(url).subscribe(contacts => {this.contacts = contacts as Contact[]; }) ;
     }
 
     edit(contact) {
+
         this.editContact = contact;
+        console.log('edit ' + contact.id);
     }
 
     update() {
         if (this.editContact) {
-            return this.http.put<Contact>('v1/contact/${contact.id}', this.editContact).subscribe(contact => {
+            return this.http.put<Contact>(`v1/contact/${this.editContact.id}`, this.editContact).subscribe(contact => {
                 const ix = contact ? this.contacts.findIndex(c => c.id === contact.id) : -1;
                 if (ix > -1) {
                     this.contacts[ix] = contact;
                 }
             });
-            this.editContact = undefined ;
         }
+        this.editContact = undefined;
     }
 }
